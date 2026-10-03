@@ -53,3 +53,71 @@ cousin(X, Y) :- parent(P1, X), parent(P2, Y), sibling(P1, P2).
 % ancestor - recursive
 ancestor(X, Z) :- parent(X, Z).
 ancestor(X, Z) :- parent(X, Y), ancestor(Y, Z).
+
+% ===== TEST QUERIES =====
+
+% --- father ---
+% ?- father(X, bart).
+% X = homer.
+% ?- father(homer, X).
+% X = bart ; X = lisa ; X = maggie.
+
+% --- mother ---
+% ?- mother(X, lisa).
+% X = marge.
+% ?- mother(selma, X).
+% X = ling.
+
+% --- son ---
+% ?- son(X, homer).
+% X = bart.
+% ?- son(homer, X).
+% X = abraham ; X = mona.
+
+% --- daughter ---
+% ?- daughter(X, marge).
+% X = lisa ; X = maggie.
+% ?- daughter(X, clancy).
+% X = marge ; X = patty ; X = selma.
+
+% --- brother ---
+% ?- brother(X, homer).
+% X = herb.
+% ?- brother(bart, lisa).
+% true.
+
+% --- sister ---
+% ?- sister(patty, selma).
+% true.
+% ?- setof(X, sister(X, bart), L).
+% L = [lisa, maggie].
+
+% --- grandfather ---
+% ?- grandfather(X, bart).
+% X = abraham ; X = clancy.
+% ?- grandfather(clancy, X).
+% X = bart ; X = lisa ; X = maggie ; X = ling.
+
+% --- uncle ---
+% ?- uncle(X, bart).
+% X = herb.
+% ?- uncle(herb, X).
+% X = bart ; X = lisa ; X = maggie.
+
+% --- aunt ---
+% ?- setof(X, aunt(X, bart), L).
+% L = [patty, selma].
+% ?- setof(X, aunt(X, ling), L).
+% L = [marge, patty].
+
+% --- cousin ---
+% ?- cousin(bart, ling).
+% true.
+% ?- setof(X, cousin(X, ling), L).
+% L = [bart, lisa, maggie].
+
+% --- ancestor ---
+% ?- setof(X, ancestor(X, bart), L).
+% L = [abraham, clancy, homer, jackie, marge, mona].
+% ?- setof(X, ancestor(abraham, X), L).
+% L = [bart, herb, homer, lisa, maggie].
