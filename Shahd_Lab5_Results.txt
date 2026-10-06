@@ -1,0 +1,106 @@
+ARTI 303 - Programming for AI
+Lab 5 - Working with Rules (lab5_simpsons.pl)
+Student: Shahd Algharyafe
+
+Knowledge base: Simpsons family tree
+Facts:  male/1, female/1, parent(Parent, Child)
+Rules:  father, mother, son, daughter, sibling, brother, sister,
+        grandfather, uncle, aunt, cousin, ancestor (recursive)
+
+Note: setof/3 is used in some queries to remove duplicate answers
+(two children who share both parents are found twice, once through
+each parent) and to sort the results.
+
+------------------------------------------------------------
+
+?- consult('c:/Users/shahd/Documents/Prolog/lab5_simpsons.pl').
+true.
+
+--- father ---
+?- father(X, bart).
+X = homer.
+
+?- father(homer, X).
+X = bart ;
+X = lisa ;
+X = maggie.
+
+--- mother ---
+?- mother(X, lisa).
+X = marge.
+
+?- mother(selma, X).
+X = ling.
+
+--- son ---
+?- son(X, homer).
+X = bart.
+
+?- son(homer, X).
+X = abraham ;
+X = mona.
+
+--- daughter ---
+?- daughter(X, marge).
+X = lisa ;
+X = maggie.
+
+?- daughter(X, clancy).
+X = marge ;
+X = patty ;
+X = selma.
+
+--- brother ---
+?- brother(X, homer).
+X = herb.
+
+?- brother(bart, lisa).
+true.
+
+--- sister ---
+?- sister(patty, selma).
+true.
+
+?- setof(X, sister(X, bart), L).
+L = [lisa, maggie].
+
+--- grandfather ---
+?- grandfather(X, bart).
+X = abraham ;
+X = clancy.
+
+?- grandfather(clancy, X).
+X = bart ;
+X = lisa ;
+X = maggie ;
+X = ling.
+
+--- uncle ---
+?- uncle(X, bart).
+X = herb.
+
+?- uncle(herb, X).
+X = bart ;
+X = lisa ;
+X = maggie.
+
+--- aunt ---
+?- setof(X, aunt(X, bart), L).
+L = [patty, selma].
+
+?- setof(X, aunt(X, ling), L).
+L = [marge, patty].
+
+--- cousin ---
+?- cousin(bart, ling).
+true.
+
+?- setof(X, cousin(X, ling), L).
+L = [bart, lisa, maggie].
+
+--- ancestor (recursive) ---
+?- setof(X, ancestor(X, bart), L).
+L = [abraham, clancy, homer, jackie, marge, mona].
+
+?- setof(X, ancestor(abraham, X), L).
+L = [bart, herb, homer, lisa, maggie].
